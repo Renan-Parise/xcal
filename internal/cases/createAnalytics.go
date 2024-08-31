@@ -13,7 +13,7 @@ func NewCreateAnalyticsCase(repository repositories.IAnalyticsRepository) *creat
 	return &createAnalyticsCase{repository: repository}
 }
 
-func (u *createAnalyticsCase) Execute(name, information string, values []byte) error {
+func (u *createAnalyticsCase) Execute(name, information string, values []float64) error {
 	analytics, err := entities.NewAnalytics(name, information, values)
 	if err != nil {
 		return err

@@ -9,9 +9,9 @@ import (
 )
 
 type createAnalyticsRequest struct {
-	Name        string `json:"name" binding:"required"`
-	Information string `json:"information" binding:"required"`
-	Values      []byte `json:"values" binding:"required"`
+	Name        string    `json:"name" binding:"required"`
+	Information string    `json:"information" binding:"required"`
+	Values      []float64 `json:"values" binding:"required"`
 }
 
 func CreateAnalytics(ctx *gin.Context, repo repositories.IAnalyticsRepository) {

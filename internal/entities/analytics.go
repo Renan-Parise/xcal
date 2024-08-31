@@ -1,7 +1,6 @@
 package entities
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -12,21 +11,16 @@ type Analytics struct {
 	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	Name        string             `bson:"name" json:"name"`
 	Information string             `bson:"information" json:"information"`
-	Values      []byte             `bson:"values" json:"values"`
+	Values      []float64          `bson:"values" json:"values"`
 	CreatedAt   time.Time          `bson:"created_at" json:"created_at"`
 	UpdatedAt   time.Time          `bson:"updated_at" json:"updated_at"`
 }
 
-func NewAnalytics(name, information string, values []byte) (*Analytics, error) {
-	valuesJSON, err := json.Marshal(values)
-	if err != nil {
-		return nil, err
-	}
-
+func NewAnalytics(name, information string, values []float64) (*Analytics, error) {
 	analytics := &Analytics{
 		Name:        name,
 		Information: information,
-		Values:      valuesJSON,
+		Values:      values,
 		CreatedAt:   time.Now(),
 		UpdatedAt:   time.Now(),
 	}
