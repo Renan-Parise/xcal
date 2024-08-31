@@ -4,14 +4,15 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/renan-parise/xcal-analytics/internal/analytes"
 	"github.com/renan-parise/xcal-analytics/internal/cases"
 	"github.com/renan-parise/xcal-analytics/internal/repositories"
 )
 
 type createAnalyticsRequest struct {
-	Name        string    `json:"name" binding:"required"`
-	Information string    `json:"information" binding:"required"`
-	Values      []float64 `json:"values" binding:"required"`
+	User     string            `bson:"user" json:"user"`
+	Hash     string            `bson:"hash" json:"hash"`
+	Analytes analytes.Analytes `bson:"analytes" json:"analytes"`
 }
 
 func CreateAnalytics(ctx *gin.Context, repo repositories.IAnalyticsRepository) {
@@ -24,7 +25,7 @@ func CreateAnalytics(ctx *gin.Context, repo repositories.IAnalyticsRepository) {
 
 	c := cases.NewCreateAnalyticsCase(repo)
 
-	err := c.Execute(req.Name, req.Information, req.Values)
+	err := c.Execute(req.User, req.Hash, req.Analytes)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

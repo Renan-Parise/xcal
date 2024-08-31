@@ -4,25 +4,31 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/renan-parise/xcal-analytics/internal/analytes"
+	"github.com/renan-parise/xcal-analytics/utils"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Analytics struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	Name        string             `bson:"name" json:"name"`
-	Information string             `bson:"information" json:"information"`
-	Values      []float64          `bson:"values" json:"values"`
-	CreatedAt   time.Time          `bson:"created_at" json:"created_at"`
-	UpdatedAt   time.Time          `bson:"updated_at" json:"updated_at"`
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	User      string             `bson:"user" json:"user"`
+	Hash      string             `bson:"hash" json:"hash"`
+	Analytes  analytes.Analytes  `bson:"analytes" json:"analytes"`
+	CreatedAt time.Time          `bson:"created_at" json:"created_at"`
+	UpdatedAt time.Time          `bson:"updated_at" json:"updated_at"`
 }
 
-func NewAnalytics(name, information string, values []float64) (*Analytics, error) {
+func NewAnalytics(user, hash string, analytes analytes.Analytes) (*Analytics, error) {
+	currentTime := *utils.Now()
+
+	utils.PopulateIncludedAtCreation(&analytes, currentTime)
+
 	analytics := &Analytics{
-		Name:        name,
-		Information: information,
-		Values:      values,
-		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Now(),
+		User:      user,
+		Hash:      hash,
+		Analytes:  analytes,
+		CreatedAt: currentTime,
+		UpdatedAt: currentTime,
 	}
 
 	if err := analytics.IsValid(); err != nil {
@@ -33,8 +39,8 @@ func NewAnalytics(name, information string, values []float64) (*Analytics, error
 }
 
 func (c *Analytics) IsValid() error {
-	if c.Name == "" || c.Information == "" || len(c.Values) == 0 {
-		return fmt.Errorf("invalid analytics")
+	if c.User == "" || c.Hash == "" {
+		return fmt.Errorf("invalid analytics instance")
 	}
 
 	return nil

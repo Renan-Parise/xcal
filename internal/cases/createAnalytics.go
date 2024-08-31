@@ -1,6 +1,7 @@
 package cases
 
 import (
+	"github.com/renan-parise/xcal-analytics/internal/analytes"
 	"github.com/renan-parise/xcal-analytics/internal/entities"
 	"github.com/renan-parise/xcal-analytics/internal/repositories"
 )
@@ -13,8 +14,8 @@ func NewCreateAnalyticsCase(repository repositories.IAnalyticsRepository) *creat
 	return &createAnalyticsCase{repository: repository}
 }
 
-func (u *createAnalyticsCase) Execute(name, information string, values []float64) error {
-	analytics, err := entities.NewAnalytics(name, information, values)
+func (u *createAnalyticsCase) Execute(name, information string, analytes analytes.Analytes) error {
+	analytics, err := entities.NewAnalytics(name, information, analytes)
 	if err != nil {
 		return err
 	}
