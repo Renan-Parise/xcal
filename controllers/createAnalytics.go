@@ -5,12 +5,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/renan-parise/xcal-analytics/internal/analytes"
-	"github.com/renan-parise/xcal-analytics/internal/cases"
+	"github.com/renan-parise/xcal-analytics/internal/entities"
 	"github.com/renan-parise/xcal-analytics/internal/repositories"
+	"github.com/renan-parise/xcal-analytics/utils"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type createAnalyticsRequest struct {
-	User     string            `bson:"user" json:"user"`
 	Hash     string            `bson:"hash" json:"hash"`
 	Analytes analytes.Analytes `bson:"analytes" json:"analytes"`
 }
@@ -23,13 +24,37 @@ func CreateAnalytics(ctx *gin.Context, repo repositories.IAnalyticsRepository) {
 		return
 	}
 
-	c := cases.NewCreateAnalyticsCase(repo)
-
-	err := c.Execute(req.User, req.Hash, req.Analytes)
-	if err != nil {
+	analytics, err := repo.Get(req.Hash)
+	if err != nil && err != mongo.ErrNoDocuments {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"success": true})
+	if analytics != nil {
+		analytics.Analytes.Merge(req.Analytes)
+		analytics.UpdatedAt = *utils.Now()
+
+		err = repo.Update(analytics)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+	} else {
+		analytics, err = entities.NewAnalytics(req.Hash, req.Analytes)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		err = repo.Insert(analytics)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		ctx.JSON(http.StatusCreated, gin.H{"success": true})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"success": true})
 }

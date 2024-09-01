@@ -14,13 +14,13 @@ func NewCreateAnalyticsCase(repository repositories.IAnalyticsRepository) *creat
 	return &createAnalyticsCase{repository: repository}
 }
 
-func (u *createAnalyticsCase) Execute(name, information string, analytes analytes.Analytes) error {
-	analytics, err := entities.NewAnalytics(name, information, analytes)
+func (u *createAnalyticsCase) Execute(name string, analytes analytes.Analytes) error {
+	analytics, err := entities.NewAnalytics(name, analytes)
 	if err != nil {
 		return err
 	}
 
-	if err := analytics.IsValid(); err != nil {
+	if err := analytics.Check(); err != nil {
 		return err
 	}
 

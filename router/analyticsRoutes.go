@@ -15,4 +15,8 @@ func AnalyticsRouter(r *gin.Engine, db *mongo.Database) {
 	v1.POST("/", func(ctx *gin.Context) {
 		controllers.CreateAnalytics(ctx, repo)
 	})
+
+	v1.GET("/:hash", func(ctx *gin.Context) {
+		controllers.GetAnalytics(ctx, repo)
+	})
 }
