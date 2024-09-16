@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/renan-parise/xcal-analytics/internal/entities"
+	"github.com/renan-parise/gofreela/internal/entities"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"

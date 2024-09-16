@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/renan-parise/xcal-analytics/internal/analytes"
-	"github.com/renan-parise/xcal-analytics/utils"
+	"github.com/renan-parise/gofreela/internal/analytes"
+	"github.com/renan-parise/gofreela/utils"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

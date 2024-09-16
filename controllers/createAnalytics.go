@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/renan-parise/xcal-analytics/internal/analytes"
-	"github.com/renan-parise/xcal-analytics/internal/entities"
-	"github.com/renan-parise/xcal-analytics/internal/repositories"
-	"github.com/renan-parise/xcal-analytics/utils"
+	"github.com/renan-parise/gofreela/internal/analytes"
+	"github.com/renan-parise/gofreela/internal/entities"
+	"github.com/renan-parise/gofreela/internal/repositories"
+	"github.com/renan-parise/gofreela/utils"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/renan-parise/xcal-analytics/internal/repositories"
+	"github.com/renan-parise/gofreela/internal/repositories"
 )
 
 func GetAnalytics(ctx *gin.Context, repo repositories.IAnalyticsRepository) {

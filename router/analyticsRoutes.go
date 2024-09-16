@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/renan-parise/xcal-analytics/controllers"
-	"github.com/renan-parise/xcal-analytics/internal/repositories"
+	"github.com/renan-parise/gofreela/controllers"
+	"github.com/renan-parise/gofreela/internal/repositories"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

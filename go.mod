@@ -1,4 +1,4 @@
-module github.com/renan-parise/xcal-analytics
+module github.com/renan-parise/gofreela
 
 go 1.22.2
 

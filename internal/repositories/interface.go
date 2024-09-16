@@ -1,6 +1,6 @@
 package repositories
 
-import "github.com/renan-parise/xcal-analytics/internal/entities"
+import "github.com/renan-parise/gofreela/internal/entities"
 
 type IAnalyticsRepository interface {
 	Insert(*entities.Analytics) error

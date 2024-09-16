@@ -1,9 +1,9 @@
 package cases
 
 import (
-	"github.com/renan-parise/xcal-analytics/internal/analytes"
-	"github.com/renan-parise/xcal-analytics/internal/entities"
-	"github.com/renan-parise/xcal-analytics/internal/repositories"
+	"github.com/renan-parise/gofreela/internal/analytes"
+	"github.com/renan-parise/gofreela/internal/entities"
+	"github.com/renan-parise/gofreela/internal/repositories"
 )
 
 type createAnalyticsCase struct {
