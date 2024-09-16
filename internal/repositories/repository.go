@@ -14,39 +14,39 @@ type Repository struct {
 	db *mongo.Collection
 }
 
-func NewAnalyticsRepository(db *mongo.Database) *Repository {
-	return &Repository{db: db.Collection("analytics")}
+func NewJobsRepository(db *mongo.Database) *Repository {
+	return &Repository{db: db.Collection("jobs")}
 }
 
-func (r *Repository) Insert(analytics *entities.Analytics) error {
+func (r *Repository) Insert(jobs *entities.Jobs) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	_, err := r.db.InsertOne(ctx, analytics)
+	_, err := r.db.InsertOne(ctx, jobs)
 	return err
 }
 
-func (r *Repository) Get(hash string) (*entities.Analytics, error) {
+func (r *Repository) Get(hash string) (*entities.Jobs, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	var analytics entities.Analytics
-	err := r.db.FindOne(ctx, bson.M{"hash": hash}).Decode(&analytics)
+	var jobs entities.Jobs
+	err := r.db.FindOne(ctx, bson.M{"hash": hash}).Decode(&jobs)
 	if err == mongo.ErrNoDocuments {
 		return nil, nil
 	}
-	return &analytics, err
+	return &jobs, err
 }
 
-func (r *Repository) Update(analytics *entities.Analytics) error {
+func (r *Repository) Update(jobs *entities.Jobs) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	filter := bson.M{"hash": analytics.Hash}
+	filter := bson.M{"hash": jobs.Hash}
 	update := bson.M{
 		"$set": bson.M{
-			"analytes":   analytics.Analytes,
-			"updated_at": analytics.UpdatedAt,
+			"positions":  jobs.Positions,
+			"updated_at": jobs.UpdatedAt,
 		},
 	}
 	_, err := r.db.UpdateOne(ctx, filter, update)

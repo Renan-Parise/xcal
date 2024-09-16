@@ -16,7 +16,7 @@ func main() {
 		})
 	})
 
-	router.AnalyticsRouter(r, db)
+	router.JobsRouter(r, db)
 
 	r.Run("127.0.0.1:8000")
 }

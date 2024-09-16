@@ -4,49 +4,49 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/renan-parise/gofreela/internal/analytes"
 	"github.com/renan-parise/gofreela/internal/entities"
+	"github.com/renan-parise/gofreela/internal/positions"
 	"github.com/renan-parise/gofreela/internal/repositories"
 	"github.com/renan-parise/gofreela/utils"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type createAnalyticsRequest struct {
-	Hash     string            `bson:"hash" json:"hash"`
-	Analytes analytes.Analytes `bson:"analytes" json:"analytes"`
+type createJobsRequest struct {
+	Hash      string              `bson:"hash" json:"hash"`
+	Positions positions.Positions `bson:"positions" json:"positions"`
 }
 
-func CreateAnalytics(ctx *gin.Context, repo repositories.IAnalyticsRepository) {
-	var req createAnalyticsRequest
+func CreateJobs(ctx *gin.Context, repo repositories.IJobsRepository) {
+	var req createJobsRequest
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	analytics, err := repo.Get(req.Hash)
+	jobs, err := repo.Get(req.Hash)
 	if err != nil && err != mongo.ErrNoDocuments {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	if analytics != nil {
-		analytics.Analytes.Merge(req.Analytes)
-		analytics.UpdatedAt = *utils.Now()
+	if jobs != nil {
+		jobs.Positions.Merge(req.Positions)
+		jobs.UpdatedAt = *utils.Now()
 
-		err = repo.Update(analytics)
+		err = repo.Update(jobs)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 	} else {
-		analytics, err = entities.NewAnalytics(req.Hash, req.Analytes)
+		jobs, err = entities.NewJobs(req.Hash, req.Positions)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-		err = repo.Insert(analytics)
+		err = repo.Insert(jobs)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

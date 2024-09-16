@@ -1,4 +1,4 @@
-package analytes
+package positions
 
 import "time"
 
@@ -13,7 +13,7 @@ type Information struct {
 	IncludedAt time.Time `json:"included_at"`
 }
 
-type Analytes struct {
+type Positions struct {
 	AlanineAminotransferase   Values `bson:"alanine_aminotransferase" json:"alanine_aminotransferase"`
 	AspartateAminotransferase Values `bson:"aspartate_aminotransferase" json:"aspartate_aminotransferase"`
 	BloodUreaNitrogen         Values `bson:"blood_urea_nitrogen" json:"blood_urea_nitrogen"`

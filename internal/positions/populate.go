@@ -1,10 +1,10 @@
-package analytes
+package positions
 
 import (
 	"time"
 )
 
-func (a *Analytes) PopulateIncludedAtCreation(t time.Time) {
+func (a *Positions) PopulateIncludedAtCreation(t time.Time) {
 	setIncludedAt := func(values []Information) {
 		for i := range values {
 			if values[i].IncludedAt.IsZero() {

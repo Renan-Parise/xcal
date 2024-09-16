@@ -7,16 +7,16 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func AnalyticsRouter(r *gin.Engine, db *mongo.Database) {
-	v1 := r.Group("/v1/analytics")
+func JobsRouter(r *gin.Engine, db *mongo.Database) {
+	v1 := r.Group("/v1/jobs")
 
-	repo := repositories.NewAnalyticsRepository(db)
+	repo := repositories.NewJobsRepository(db)
 
 	v1.POST("/", func(ctx *gin.Context) {
-		controllers.CreateAnalytics(ctx, repo)
+		controllers.CreateJobs(ctx, repo)
 	})
 
 	v1.GET("/:hash", func(ctx *gin.Context) {
-		controllers.GetAnalytics(ctx, repo)
+		controllers.GetJobs(ctx, repo)
 	})
 }
