@@ -14,7 +14,7 @@ func NewCreateJobsCase(repository repositories.IJobsRepository) *createJobsCase 
 	return &createJobsCase{repository: repository}
 }
 
-func (u *createJobsCase) Execute(name string, positions positions.Positions) error {
+func (u *createJobsCase) Execute(name string, positions positions.Position) error {
 	jobs, err := entities.NewJobs(name, positions)
 	if err != nil {
 		return err

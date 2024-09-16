@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/renan-parise/gofreela/errors"
 	"github.com/renan-parise/gofreela/internal/entities"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -23,7 +24,11 @@ func (r *Repository) Insert(jobs *entities.Jobs) error {
 	defer cancel()
 
 	_, err := r.db.InsertOne(ctx, jobs)
-	return err
+	if err != nil {
+		return errors.NewDatabaseError("error inserting new job: " + err.Error())
+	}
+
+	return nil
 }
 
 func (r *Repository) Get(hash string) (*entities.Jobs, error) {
@@ -35,6 +40,10 @@ func (r *Repository) Get(hash string) (*entities.Jobs, error) {
 	if err == mongo.ErrNoDocuments {
 		return nil, nil
 	}
+	if err != nil {
+		return nil, errors.NewDatabaseError("error getting job: " + err.Error())
+	}
+
 	return &jobs, err
 }
 
